@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { rhfFormText } from '../../../constants/formText';
 
 import './ReactHookForm.css';
 
@@ -32,42 +33,43 @@ export const ReactHookForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rhf-form">
-      <h2 className="form-title">Умная регистрация</h2>
-      <p className="form-subtitle">Управляемая форма с React Hook Form</p>
+      <h2 className="form-title">{rhfFormText.title}</h2>
+      <p className="form-subtitle">{rhfFormText.subtitle}</p>
 
       <div className="rhf-form__container">
         <div className="rhf-form__field">
-          <label htmlFor="rhf-name">Кличка пушистого жителя *</label>
+          <label htmlFor="rhf-name">{rhfFormText.nameLabel}</label>
           <input
             id="rhf-name"
             {...register('name', { required: true })}
             type="text"
-            placeholder="Введите кличку"
+            placeholder={rhfFormText.namePlaceholder}
           />
         </div>
+
         <div className="rhf-form__field">
-          <label htmlFor="rhf-age">Сколько зим пережил котик? *</label>
+          <label htmlFor="rhf-age">{rhfFormText.ageLabel}</label>
           <input
             id="rhf-age"
             {...register('age', { required: true, valueAsNumber: true })}
             type="number"
-            placeholder="Возраст в годах"
+            placeholder={rhfFormText.agePlaceholder}
           />
         </div>
       </div>
 
       <div className="rhf-form__field">
-        <label htmlFor="rhf-email">Почта хранителя котика *</label>
+        <label htmlFor="rhf-email">{rhfFormText.emailLabel}</label>
         <input
           id="rhf-email"
           {...register('email', { required: true })}
           type="email"
-          placeholder="example@mail.ru"
+          placeholder={rhfFormText.emailPlaceholder}
         />
       </div>
 
       <div className="rhf-form__field rhf-form__field--radio">
-        <label>Пол котика *</label>
+        <label>{rhfFormText.genderLabel}</label>
         <div className="rhf-form__radio-group">
           <label>
             <input
@@ -76,11 +78,11 @@ export const ReactHookForm = () => {
               {...register('gender')}
               defaultChecked
             />{' '}
-            Кот
+            {rhfFormText.genderMale}
           </label>
           <label>
             <input type="radio" value="female" {...register('gender')} />{' '}
-            Кошечка
+            {rhfFormText.genderFemale}
           </label>
         </div>
       </div>
@@ -88,12 +90,12 @@ export const ReactHookForm = () => {
       <div className="rhf-form__field rhf-form__field--checkbox">
         <label>
           <input type="checkbox" {...register('terms', { required: true })} />
-          Соглашаюсь с условиями и обещаю регулярно гладить котика *
+          {rhfFormText.termsLabel}
         </label>
       </div>
 
       <button type="submit" className="submit-btn" disabled={!isValid}>
-        Зарегистрировать котика
+        {rhfFormText.submitButton}
       </button>
     </form>
   );

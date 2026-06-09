@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import type { SyntheticEvent } from 'react';
 
+import { uncontrolledFormText } from '../../../constants/formText';
+
 import './UncontrolledForm.css';
 
 export const UncontrolledForm = () => {
@@ -26,48 +28,57 @@ export const UncontrolledForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="uncontrolled-form">
-      <h2 className="form-title">Простая регистрация</h2>
-      <p className="form-subtitle">Неконтролируемая форма (без RHF)</p>
+      <h2 className="form-title">{uncontrolledFormText.title}</h2>
+      <p className="form-subtitle">{uncontrolledFormText.subtitle}</p>
 
       <div className="uncontrolled-form__container">
         <div className="uncontrolled-form__field">
-          <label htmlFor="uncontrolled-name">Кличка пушистого жителя *</label>
+          <label htmlFor="uncontrolled-name">
+            {uncontrolledFormText.nameLabel}
+          </label>
           <input
             id="uncontrolled-name"
             ref={nameRef}
             type="text"
-            placeholder="Введите кличку"
+            placeholder={uncontrolledFormText.namePlaceholder}
           />
         </div>
+
         <div className="uncontrolled-form__field">
-          <label htmlFor="uncontrolled-age">Сколько зим пережил котик? *</label>
+          <label htmlFor="uncontrolled-age">
+            {uncontrolledFormText.ageLabel}
+          </label>
           <input
             id="uncontrolled-age"
             ref={ageRef}
             type="number"
-            placeholder="Возраст в годах"
+            placeholder={uncontrolledFormText.agePlaceholder}
           />
         </div>
       </div>
 
       <div className="uncontrolled-form__field">
-        <label htmlFor="uncontrolled-email">Почта хранителя котика *</label>
+        <label htmlFor="uncontrolled-email">
+          {uncontrolledFormText.emailLabel}
+        </label>
         <input
           id="uncontrolled-email"
           ref={emailRef}
           type="email"
-          placeholder="example@mail.ru"
+          placeholder={uncontrolledFormText.emailPlaceholder}
         />
       </div>
 
       <div className="uncontrolled-form__field uncontrolled-form__field--radio">
-        <label>Пол котика *</label>
+        <label>{uncontrolledFormText.genderLabel}</label>
         <div className="uncontrolled-form__radio-group">
           <label>
-            <input type="radio" value="male" name="gender" defaultChecked /> Кот
+            <input type="radio" value="male" name="gender" defaultChecked />{' '}
+            {uncontrolledFormText.genderMale}
           </label>
           <label>
-            <input type="radio" value="female" name="gender" /> Кошечка
+            <input type="radio" value="female" name="gender" />{' '}
+            {uncontrolledFormText.genderFemale}
           </label>
         </div>
       </div>
@@ -75,12 +86,12 @@ export const UncontrolledForm = () => {
       <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
         <label>
           <input type="checkbox" ref={termsRef} />
-          Соглашаюсь с условиями и обещаю регулярно гладить котика *
+          {uncontrolledFormText.termsLabel}
         </label>
       </div>
 
       <button type="submit" className="submit-btn">
-        Зарегистрировать котика
+        {uncontrolledFormText.submitButton}
       </button>
     </form>
   );

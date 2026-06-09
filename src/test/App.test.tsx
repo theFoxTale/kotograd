@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from '../App';
+import { uncontrolledFormText, rhfFormText } from '../constants/formText';
 
 describe('App', () => {
   it('отображает заголовок и кнопки вызова форм', () => {
@@ -17,9 +18,11 @@ describe('App', () => {
     await user.click(screen.getByText('Простая регистрация'));
 
     const modal = await screen.findByRole('dialog');
-    expect(within(modal).getByText('Простая регистрация')).toBeInTheDocument();
     expect(
-      within(modal).getByLabelText(/Кличка пушистого жителя/i)
+      within(modal).getByText(uncontrolledFormText.title)
+    ).toBeInTheDocument();
+    expect(
+      within(modal).getByLabelText(uncontrolledFormText.nameLabel)
     ).toBeInTheDocument();
   });
 
@@ -43,9 +46,9 @@ describe('App', () => {
     await user.click(screen.getByText('Умная регистрация'));
 
     const modal = await screen.findByRole('dialog');
-    expect(within(modal).getByText('Умная регистрация')).toBeInTheDocument();
+    expect(within(modal).getByText(rhfFormText.title)).toBeInTheDocument();
     expect(
-      within(modal).getByLabelText(/Кличка пушистого жителя/i)
+      within(modal).getByLabelText(rhfFormText.nameLabel)
     ).toBeInTheDocument();
   });
 });
