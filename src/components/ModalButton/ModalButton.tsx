@@ -1,3 +1,4 @@
+import { imageAlt } from '../../constants/appText';
 import './ModalButton.css';
 
 interface ModalButtonProps {
@@ -19,12 +20,16 @@ export function ModalButton({
 }: ModalButtonProps) {
   return (
     <button className={`modal-container ${modalClass}`} onClick={onClick}>
-      <img src={iconImage} alt="Иконка" className="modal-icon" />
+      <img src={iconImage} alt={imageAlt.modalIcon} className="modal-icon" />
       <div className="modal-description">
         <h3>{firstLineText}</h3>
         <div className="modal-arrow-container">
           <p>{secondLineText}</p>
-          <img src={arrowImage} alt="Стрелка" className="modal-arrow" />
+          <img
+            src={arrowImage}
+            alt={imageAlt.modalArrow}
+            className="modal-arrow"
+          />
         </div>
       </div>
     </button>

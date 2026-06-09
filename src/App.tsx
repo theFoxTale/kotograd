@@ -1,10 +1,12 @@
 import { useState } from 'react';
+
 import {
   Modal,
   WelcomeSection,
   UncontrolledForm,
   ReactHookForm,
 } from './components';
+import { imageAlt } from './constants/appText';
 
 import './App.css';
 import appHero from './assets/images/cat-hero.png';
@@ -22,7 +24,7 @@ function App() {
         onOpenUncontrolled={() => openModal('uncontrolled')}
         onOpenRHF={() => openModal('rhf')}
       />
-      <img src={appHero} alt="Главный герой КотоГрада" className="app-hero" />
+      <img src={appHero} alt={imageAlt.hero} className="app-hero" />
 
       <Modal isOpen={modalType !== null} onClose={closeModal}>
         {modalType === 'uncontrolled' && <UncontrolledForm />}

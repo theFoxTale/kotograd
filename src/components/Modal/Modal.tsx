@@ -1,6 +1,8 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
+import { imageAlt, labelText } from '../../constants/appText';
+
 import './Modal.css';
 import modalCat from '../../assets/images/upper-cat.png';
 
@@ -81,12 +83,16 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         role="dialog"
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Закрыть">
+        <button
+          className="modal-close"
+          onClick={onClose}
+          aria-label={labelText.modalClose}
+        >
           ✕
         </button>
 
         <div className="modal-cat">
-          <img src={modalCat} alt="Котик наблюдает" />
+          <img src={modalCat} alt={imageAlt.modalCat} />
         </div>
 
         {children}

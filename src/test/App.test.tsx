@@ -2,20 +2,24 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import App from '../App';
+
 import { uncontrolledFormText, rhfFormText } from '../constants/formText';
+import { appText, buttonTexts, labelText } from '../constants/appText';
 
 describe('App', () => {
   it('отображает заголовок и кнопки вызова форм', () => {
     render(<App />);
-    expect(screen.getByText('КотоГрад')).toBeInTheDocument();
-    expect(screen.getByText('Простая регистрация')).toBeInTheDocument();
-    expect(screen.getByText('Умная регистрация')).toBeInTheDocument();
+    expect(screen.getByText(appText.appTitle)).toBeInTheDocument();
+    expect(
+      screen.getByText(buttonTexts.uncontrolledButtonTitle)
+    ).toBeInTheDocument();
+    expect(screen.getByText(buttonTexts.rhfButtonTitle)).toBeInTheDocument();
   });
 
   it('открывает модальное окно с неконтролируемой формой по клику на первую кнопку', async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByText('Простая регистрация'));
+    await user.click(screen.getByText(buttonTexts.uncontrolledButtonTitle));
 
     const modal = await screen.findByRole('dialog');
     expect(
@@ -29,10 +33,10 @@ describe('App', () => {
   it('закрывает модальное окно по кнопке "✕"', async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByText('Простая регистрация'));
+    await user.click(screen.getByText(buttonTexts.uncontrolledButtonTitle));
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
 
-    const closeButton = screen.getByLabelText('Закрыть');
+    const closeButton = screen.getByLabelText(labelText.modalClose);
     await user.click(closeButton);
 
     await waitFor(() => {
@@ -43,7 +47,7 @@ describe('App', () => {
   it('открывает модальное окно с формой React Hook Form по второй кнопке', async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByText('Умная регистрация'));
+    await user.click(screen.getByText(buttonTexts.rhfButtonTitle));
 
     const modal = await screen.findByRole('dialog');
     expect(within(modal).getByText(rhfFormText.title)).toBeInTheDocument();

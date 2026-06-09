@@ -1,4 +1,5 @@
 import { ModalButton } from '../ModalButton/ModalButton';
+import { appText, buttonTexts, imageAlt } from '../../constants/appText';
 
 import './WelcomeSection.css';
 import appIcon from '../../assets/images/cat-icon.png';
@@ -22,24 +23,24 @@ export const WelcomeSection = ({
     <div className="welcome-section">
       <div className="welcome-description">
         <div className="welcome-header">
-          <img src={appIcon} alt="Логотип КотоГрада" className="welcome-icon" />
-          <h1>КотоГрад</h1>
+          <img src={appIcon} alt={imageAlt.logo} className="welcome-icon" />
+          <h1>{appText.appTitle}</h1>
         </div>
-        <p>Форум для самых пушистых жителей интернета</p>
+        <p>{appText.appSubtitle}</p>
       </div>
       <div className="welcome-buttons">
         <ModalButton
           iconImage={controlButtonIcon}
-          firstLineText="Простая регистрация"
-          secondLineText="Uncontrolled Form"
+          firstLineText={buttonTexts.uncontrolledButtonTitle}
+          secondLineText={buttonTexts.uncontrolledButtonSubtitle}
           arrowImage={controlButtonArrow}
           modalClass="orange-modal"
           onClick={onOpenUncontrolled}
         />
         <ModalButton
           iconImage={libButtonIcon}
-          firstLineText="Умная регистрация"
-          secondLineText="React Hook Form"
+          firstLineText={buttonTexts.rhfButtonTitle}
+          secondLineText={buttonTexts.rhfButtonSubtitle}
           arrowImage={libButtonArrow}
           modalClass="green-modal"
           onClick={onOpenRHF}
