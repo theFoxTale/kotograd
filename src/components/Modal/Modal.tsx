@@ -1,6 +1,8 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+
 import './Modal.css';
+import modalCat from '../../assets/images/upper-cat.png';
 
 interface ModalProps {
   isOpen: boolean;
@@ -81,6 +83,11 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         <button className="modal-close" onClick={onClose} aria-label="Закрыть">
           ✕
         </button>
+
+        <div className="modal-cat">
+          <img src={modalCat} alt="Котик наблюдает" />
+        </div>
+
         {children}
       </div>
     </div>,
