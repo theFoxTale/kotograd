@@ -6,6 +6,7 @@ interface ModalButtonProps {
   secondLineText: string;
   arrowImage: string;
   modalClass: string;
+  onClick: () => void;
 }
 
 export function ModalButton({
@@ -14,9 +15,10 @@ export function ModalButton({
   secondLineText,
   arrowImage,
   modalClass,
+  onClick,
 }: ModalButtonProps) {
   return (
-    <button className={`modal-container ${modalClass}`}>
+    <button className={`modal-container ${modalClass}`} onClick={onClick}>
       <img src={iconImage} alt="Иконка" className="modal-icon" />
       <div className="modal-description">
         <h3>{firstLineText}</h3>
