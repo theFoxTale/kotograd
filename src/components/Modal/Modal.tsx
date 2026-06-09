@@ -78,6 +78,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         className="modal-content"
         ref={modalRef}
         tabIndex={-1}
+        role="dialog"
         onClick={(e) => e.stopPropagation()}
       >
         <button className="modal-close" onClick={onClose} aria-label="Закрыть">
