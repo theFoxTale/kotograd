@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { rhfFormText } from '../../../constants/formText';
 
 import './ReactHookForm.css';
+import { useCatCitizensStore } from '../../../store/useCatCitizensStore.ts';
 
 interface FormValues {
   name: string;
@@ -11,7 +12,13 @@ interface FormValues {
   terms: boolean;
 }
 
-export const ReactHookForm = () => {
+interface ReactHookFormProps {
+  onSuccess: () => void;
+}
+
+export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
+  const addCitizen = useCatCitizensStore((state) => state.addCitizen);
+
   const {
     register,
     handleSubmit,
@@ -28,7 +35,8 @@ export const ReactHookForm = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log('React Hook Form data:', data);
+    addCitizen(data);
+    onSuccess();
   };
 
   return (

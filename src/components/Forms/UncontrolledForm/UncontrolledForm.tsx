@@ -2,14 +2,21 @@ import { useRef } from 'react';
 import type { SyntheticEvent } from 'react';
 
 import { uncontrolledFormText } from '../../../constants/formText';
+import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
 
 import './UncontrolledForm.css';
 
-export const UncontrolledForm = () => {
+interface UncontrolledFormProps {
+  onSuccess: () => void;
+}
+
+export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
+
+  const addCitizen = useCatCitizensStore((state) => state.addCitizen);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -18,12 +25,14 @@ export const UncontrolledForm = () => {
 
     const formData = {
       name: nameRef.current?.value || '',
-      age: ageRef.current?.value || '',
+      age: Number(ageRef.current?.value),
       email: emailRef.current?.value || '',
-      gender: (formDataObj.get('gender') as string) || '',
+      gender: (formDataObj.get('gender') as string) || 'male',
       terms: termsRef.current?.checked || false,
     };
-    console.log('Uncontrolled form data:', formData);
+
+    addCitizen(formData);
+    onSuccess();
   };
 
   return (
