@@ -18,6 +18,15 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest --watch"
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "node_modules/.bin/prettier --write",
+      "node_modules/.bin/eslint --fix"
+    ],
+    "*.{css,json,md}": [
+      "node_modules/.bin/prettier --write"
+    ]
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
     "react": "^19.2.5",
