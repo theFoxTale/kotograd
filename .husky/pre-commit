@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "Running ts type check..."
+npm run type-check
+echo "✅ Type check passed."
+
 echo "Running prettier and eslint on all files..."
 npm run format:fix
 npm run lint -- --fix
+echo "✅ Prettier and eslint checks passed."
