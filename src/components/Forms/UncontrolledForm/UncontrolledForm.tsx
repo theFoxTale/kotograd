@@ -29,8 +29,8 @@ export const UncontrolledForm = () => {
       <h2 className="form-title">Простая регистрация</h2>
       <p className="form-subtitle">Неконтролируемая форма (без RHF)</p>
 
-      <div className="form-container">
-        <div className="form-field">
+      <div className="uncontrolled-form__container">
+        <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-name">Кличка пушистого жителя *</label>
           <input
             id="uncontrolled-name"
@@ -39,8 +39,7 @@ export const UncontrolledForm = () => {
             placeholder="Введите кличку"
           />
         </div>
-
-        <div className="form-field">
+        <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-age">Сколько зим пережил котик? *</label>
           <input
             id="uncontrolled-age"
@@ -51,7 +50,7 @@ export const UncontrolledForm = () => {
         </div>
       </div>
 
-      <div className="form-field">
+      <div className="uncontrolled-form__field">
         <label htmlFor="uncontrolled-email">Почта хранителя котика *</label>
         <input
           id="uncontrolled-email"
@@ -61,9 +60,9 @@ export const UncontrolledForm = () => {
         />
       </div>
 
-      <div className="form-field radio-field">
+      <div className="uncontrolled-form__field uncontrolled-form__field--radio">
         <label>Пол котика *</label>
-        <div className="radio-group">
+        <div className="uncontrolled-form__radio-group">
           <label>
             <input type="radio" value="male" name="gender" defaultChecked /> Кот
           </label>
@@ -73,7 +72,7 @@ export const UncontrolledForm = () => {
         </div>
       </div>
 
-      <div className="form-field checkbox-field">
+      <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
         <label>
           <input type="checkbox" ref={termsRef} />
           Соглашаюсь с условиями и обещаю регулярно гладить котика *
