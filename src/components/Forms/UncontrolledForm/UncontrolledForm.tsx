@@ -9,6 +9,9 @@ import {
   type StrengthResult,
 } from '../../../utils';
 
+import { ZodError } from 'zod';
+import { citizenSchema } from '../../../utils';
+
 import './UncontrolledForm.css';
 
 interface UncontrolledFormProps {
@@ -23,12 +26,10 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
   const termsRef = useRef<HTMLInputElement>(null);
 
   const countries = useCatCitizensStore((state) => state.countries);
-  const [countryError, setCountryError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordLengthError, setPasswordLengthError] = useState('');
   const [strength, setStrength] = useState<StrengthResult>({
     score: 0,
     message: '',
@@ -42,25 +43,21 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
 
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setFieldErrors({});
+
     const form = event.currentTarget;
     const formDataObj = new FormData(form);
-
     const country = countryRef.current?.value.trim() || '';
+
     if (!countries.includes(country)) {
-      setCountryError('Выберите страну из списка');
+      setFieldErrors((prev) => ({
+        ...prev,
+        country: 'Выберите страну из списка',
+      }));
       return;
     }
 
-    if (password !== confirmPassword) {
-      setPasswordError('Пароли не совпадают');
-      return;
-    }
-    if (password.length < 6) {
-      setPasswordError('Пароль должен быть не менее 6 символов');
-      return;
-    }
-
-    const formData = {
+    const rawData = {
       name: nameRef.current?.value || '',
       age: Number(ageRef.current?.value),
       email: emailRef.current?.value || '',
@@ -68,38 +65,44 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       terms: termsRef.current?.checked || false,
       country,
       password,
-      imageBase64,
+      confirmPassword,
     };
 
-    addCitizen(formData);
-    onSuccess();
+    try {
+      const validatedData = citizenSchema.parse(rawData);
+      const formData = { ...validatedData, imageBase64 };
+      addCitizen(formData);
+      onSuccess();
+    } catch (err) {
+      if (err instanceof ZodError) {
+        const errors: Record<string, string> = {};
+        err.issues.forEach((issue) => {
+          if (issue.path[0]) {
+            errors[issue.path[0].toString()] = issue.message;
+          }
+        });
+        setFieldErrors(errors);
+      }
+    }
   };
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     setPassword(val);
     setStrength(checkPasswordStrength(val));
-    if (val.length > 0 && val.length < 6) {
-      setPasswordLengthError('Минимум 6 символов');
-    } else {
-      setPasswordLengthError('');
+    if (fieldErrors.password) {
+      setFieldErrors((prev) => ({ ...prev, password: '' }));
     }
-
-    if (confirmPassword && val !== confirmPassword) {
-      setPasswordError('Пароли не совпадают');
-    } else {
-      setPasswordError('');
+    if (fieldErrors.confirmPassword) {
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: '' }));
     }
   };
 
   const handleConfirmChange = (event: ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     setConfirmPassword(val);
-
-    if (password !== val) {
-      setPasswordError('Пароли не совпадают');
-    } else {
-      setPasswordError('');
+    if (fieldErrors.confirmPassword) {
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: '' }));
     }
   };
 
@@ -149,7 +152,11 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             type="text"
             placeholder={uncontrolledFormText.namePlaceholder}
           />
+          {fieldErrors.name && (
+            <div className="error-message">{fieldErrors.name}</div>
+          )}
         </div>
+
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-age">
             {uncontrolledFormText.ageLabel}
@@ -160,6 +167,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             type="number"
             placeholder={uncontrolledFormText.agePlaceholder}
           />
+          {fieldErrors.age && (
+            <div className="error-message">{fieldErrors.age}</div>
+          )}
         </div>
       </div>
 
@@ -173,6 +183,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           type="email"
           placeholder={uncontrolledFormText.emailPlaceholder}
         />
+        {fieldErrors.email && (
+          <div className="error-message">{fieldErrors.email}</div>
+        )}
       </div>
 
       <div className="uncontrolled-form__container">
@@ -205,6 +218,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
               {uncontrolledFormText.genderFemale}
             </label>
           </div>
+          {fieldErrors.gender && (
+            <div className="error-message">{fieldErrors.gender}</div>
+          )}
         </div>
       </div>
 
@@ -224,7 +240,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             <option key={country} value={country} />
           ))}
         </datalist>
-        {countryError && <div className="error-message">{countryError}</div>}
+        {fieldErrors.country && (
+          <div className="error-message">{fieldErrors.country}</div>
+        )}
       </div>
 
       <div className="uncontrolled-form__container">
@@ -239,6 +257,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             onChange={handlePasswordChange}
             placeholder={uncontrolledFormText.passwordPlaceholder}
           />
+          {fieldErrors.password && (
+            <div className="error-message">{fieldErrors.password}</div>
+          )}
         </div>
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-confirm-password">
@@ -251,26 +272,28 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             onChange={handleConfirmChange}
             placeholder={uncontrolledFormText.confirmPasswordPlaceholder}
           />
+          {fieldErrors.confirmPassword && (
+            <div className="error-message">{fieldErrors.confirmPassword}</div>
+          )}
         </div>
       </div>
 
-      <div className="uncontrolled-form__container">
-        {passwordLengthError && (
-          <div className="error-message">{passwordLengthError}</div>
-        )}
-        {strength.message && (
-          <div className="password-strength" style={{ color: strength.color }}>
-            Сложность: {strength.message}
-          </div>
-        )}
-        {passwordError && <div className="error-message">{passwordError}</div>}
-      </div>
+      {strength.message && (
+        <div className="password-strength" style={{ color: strength.color }}>
+          Сложность: {strength.message}
+        </div>
+      )}
 
-      <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
-        <label>
-          <input type="checkbox" ref={termsRef} />
-          {uncontrolledFormText.termsLabel}
-        </label>
+      <div className="uncontrolled-form__container-term">
+        <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
+          <label>
+            <input type="checkbox" ref={termsRef} />
+            {uncontrolledFormText.termsLabel}
+          </label>
+        </div>
+        {fieldErrors.terms && (
+          <div className="error-message">{fieldErrors.terms}</div>
+        )}
       </div>
 
       <button type="submit" className="submit-btn">

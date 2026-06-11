@@ -1,23 +1,19 @@
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { rhfFormText } from '../../../constants/formText';
 import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
-import { checkPasswordStrength, imageToBase64 } from '../../../utils';
+
+import type { CitizenFormData } from '../../../utils';
+import {
+  checkPasswordStrength,
+  citizenSchema,
+  imageToBase64,
+} from '../../../utils';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import './ReactHookForm.css';
-
-interface FormValues {
-  name: string;
-  age: number;
-  email: string;
-  gender: string;
-  terms: boolean;
-  country: string;
-  password: string;
-  confirmPassword: string;
-  image?: FileList;
-}
 
 interface ReactHookFormProps {
   onSuccess: () => void;
@@ -27,14 +23,18 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
   const addCitizen = useCatCitizensStore((state) => state.addCitizen);
   const countries = useCatCitizensStore((state) => state.countries);
 
+  const [imageBase64, setImageBase64] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
+  const [imageError, setImageError] = useState('');
+
   const {
     register,
     watch,
     handleSubmit,
     formState: { isValid, errors },
     setError,
-    clearErrors,
-  } = useForm<FormValues>({
+  } = useForm<CitizenFormData>({
+    resolver: zodResolver(citizenSchema),
     defaultValues: {
       name: '',
       age: undefined,
@@ -51,43 +51,42 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
   const password = watch('password');
   const strength = checkPasswordStrength(password);
 
-  const imageFile = watch('image');
-  const [imagePreview, setImagePreview] = useState('');
-
-  useEffect(() => {
-    if (imageFile && imageFile[0]) {
-      const file = imageFile[0];
-      const validTypes = ['image/png', 'image/jpeg'];
-      const maxSize = 2 * 1024 * 1024;
-      if (!validTypes.includes(file.type)) {
-        setError('image', { message: 'Только PNG или JPEG' });
-        return;
-      }
-      if (file.size > maxSize) {
-        setError('image', { message: 'Размер файла не более 2 MB' });
-        return;
-      }
-      clearErrors('image');
-      imageToBase64(file).then((base64) => setImagePreview(base64));
-    } else {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setImageError('');
+    if (!file) {
+      setImageBase64('');
       setImagePreview('');
+      return;
     }
-  }, [imageFile, setError, clearErrors]);
 
-  const onSubmit = async (data: FormValues) => {
+    const validTypes = ['image/png', 'image/jpeg'];
+    const maxSize = 2 * 1024 * 1024;
+    if (!validTypes.includes(file.type)) {
+      setImageError('Только PNG или JPEG');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setImageError('Размер файла не более 2 MB');
+      return;
+    }
+
+    try {
+      const base64 = await imageToBase64(file);
+      setImageBase64(base64);
+      setImagePreview(base64);
+    } catch {
+      setImageError('Ошибка при загрузке изображения');
+    }
+  };
+
+  const onSubmit = async (data: CitizenFormData) => {
     if (!countries.includes(data.country)) {
       setError('country', { message: 'Выберите страну из списка' });
       return;
     }
-
-    const imageBase64 = imageFile?.[0]
-      ? await imageToBase64(imageFile[0])
-      : undefined;
-    addCitizen({
-      ...data,
-      imageBase64,
-    });
-
+    addCitizen({ ...data, imageBase64 });
     onSuccess();
   };
 
@@ -101,20 +100,26 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
           <label htmlFor="rhf-name">{rhfFormText.nameLabel}</label>
           <input
             id="rhf-name"
-            {...register('name', { required: true })}
+            {...register('name')}
             type="text"
             placeholder={rhfFormText.namePlaceholder}
           />
+          {errors.name && (
+            <div className="error-message">{errors.name.message}</div>
+          )}
         </div>
 
         <div className="rhf-form__field">
           <label htmlFor="rhf-age">{rhfFormText.ageLabel}</label>
           <input
             id="rhf-age"
-            {...register('age', { required: true, valueAsNumber: true })}
+            {...register('age', { valueAsNumber: true })}
             type="number"
             placeholder={rhfFormText.agePlaceholder}
           />
+          {errors.age && (
+            <div className="error-message">{errors.age.message}</div>
+          )}
         </div>
       </div>
 
@@ -122,10 +127,13 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
         <label htmlFor="rhf-email">{rhfFormText.emailLabel}</label>
         <input
           id="rhf-email"
-          {...register('email', { required: true })}
+          {...register('email')}
           type="email"
           placeholder={rhfFormText.emailPlaceholder}
         />
+        {errors.email && (
+          <div className="error-message">{errors.email.message}</div>
+        )}
       </div>
 
       <div className="rhf-form__container">
@@ -135,12 +143,10 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             id="rhf-image"
             type="file"
             accept="image/png, image/jpeg"
-            {...register('image')}
+            onChange={handleFileChange}
           />
           <div className="image-hint">{rhfFormText.imageHint}</div>
-          {errors.image && (
-            <div className="error-message">{errors.image.message}</div>
-          )}
+          {imageError && <div className="error-message">{imageError}</div>}
           {imagePreview && (
             <img src={imagePreview} alt="Preview" className="image-preview" />
           )}
@@ -163,6 +169,9 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
               {rhfFormText.genderFemale}
             </label>
           </div>
+          {errors.gender && (
+            <div className="error-message">{errors.gender.message}</div>
+          )}
         </div>
       </div>
 
@@ -170,7 +179,7 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
         <label htmlFor="rhf-country">{rhfFormText.countryLabel}</label>
         <input
           id="rhf-country"
-          {...register('country', { required: true })}
+          {...register('country')}
           type="text"
           list="rhf-countries-list"
           placeholder={rhfFormText.countryPlaceholder}
@@ -187,50 +196,50 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
 
       <div className="rhf-form__container">
         <div className="rhf-form__field">
-          <label htmlFor="rhf-email">{rhfFormText.passwordLabel}</label>
+          <label htmlFor="rhf-password">{rhfFormText.passwordLabel}</label>
           <input
+            id="rhf-password"
             type="password"
-            {...register('password', {
-              required: 'Пароль обязателен',
-              minLength: { value: 6, message: 'Минимум 6 символов' },
-            })}
+            {...register('password')}
             placeholder={rhfFormText.passwordPlaceholder}
           />
+          {errors.password && (
+            <div className="error-message">{errors.password.message}</div>
+          )}
         </div>
 
         <div className="rhf-form__field">
-          <label htmlFor="rhf-email">{rhfFormText.confirmPasswordLabel}</label>
+          <label htmlFor="rhf-confirm-password">
+            {rhfFormText.confirmPasswordLabel}
+          </label>
           <input
+            id="rhf-confirm-password"
             type="password"
-            {...register('confirmPassword', {
-              required: true,
-              validate: (value) =>
-                value === watch('password') || 'Пароли не совпадают',
-            })}
+            {...register('confirmPassword')}
             placeholder={rhfFormText.confirmPasswordPlaceholder}
           />
+          {errors.confirmPassword && (
+            <div className="error-message">
+              {errors.confirmPassword.message}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="rhf-form__container">
-        {errors.password && (
-          <div className="error-message">{errors.password.message}</div>
-        )}
-        {password && (
-          <div className="password-strength" style={{ color: strength.color }}>
-            Сложность: {strength.message}
-          </div>
-        )}
-        {errors.confirmPassword && (
-          <div className="error-message">{errors.confirmPassword.message}</div>
-        )}
-      </div>
+      {password && (
+        <div className="password-strength" style={{ color: strength.color }}>
+          Сложность: {strength.message}
+        </div>
+      )}
 
       <div className="rhf-form__field rhf-form__field--checkbox">
         <label>
-          <input type="checkbox" {...register('terms', { required: true })} />
+          <input type="checkbox" {...register('terms')} />
           {rhfFormText.termsLabel}
         </label>
+        {errors.terms && (
+          <div className="error-message">{errors.terms.message}</div>
+        )}
       </div>
 
       <button type="submit" className="submit-btn" disabled={!isValid}>
