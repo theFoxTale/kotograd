@@ -57,6 +57,11 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       return;
     }
 
+    if (!imageBase64) {
+      setFieldErrors((prev) => ({ ...prev, image: 'Загрузите фото котика' }));
+      return;
+    }
+
     const rawData = {
       name: nameRef.current?.value || '',
       age: Number(ageRef.current?.value),
@@ -203,6 +208,9 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           {imageError && <div className="error-message">{imageError}</div>}
           {imageBase64 && (
             <img src={imageBase64} alt="Preview" className="image-preview" />
+          )}
+          {fieldErrors.image && (
+            <div className="error-message">{fieldErrors.image}</div>
           )}
         </div>
 

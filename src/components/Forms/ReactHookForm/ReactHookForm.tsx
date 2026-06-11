@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { rhfFormText } from '../../../constants/formText';
 import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
@@ -51,8 +51,8 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
   const password = watch('password');
   const strength = checkPasswordStrength(password);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     setImageError('');
     if (!file) {
       setImageBase64('');
@@ -86,6 +86,12 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
       setError('country', { message: 'Выберите страну из списка' });
       return;
     }
+
+    if (!imageBase64) {
+      setError('root', { message: 'Загрузите фото котика' });
+      return;
+    }
+
     addCitizen({ ...data, imageBase64 });
     onSuccess();
   };
@@ -147,6 +153,9 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
           />
           <div className="image-hint">{rhfFormText.imageHint}</div>
           {imageError && <div className="error-message">{imageError}</div>}
+          {errors.root && (
+            <div className="error-message">{errors.root.message}</div>
+          )}
           {imagePreview && (
             <img src={imagePreview} alt="Preview" className="image-preview" />
           )}
