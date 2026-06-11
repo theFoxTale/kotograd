@@ -110,9 +110,11 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             type="text"
             placeholder={rhfFormText.namePlaceholder}
           />
-          {errors.name && (
-            <div className="error-message">{errors.name.message}</div>
-          )}
+          <div className="field-error-container">
+            {errors.name && (
+              <div className="error-message">{errors.name.message}</div>
+            )}
+          </div>
         </div>
 
         <div className="rhf-form__field">
@@ -123,9 +125,11 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             type="number"
             placeholder={rhfFormText.agePlaceholder}
           />
-          {errors.age && (
-            <div className="error-message">{errors.age.message}</div>
-          )}
+          <div className="field-error-container">
+            {errors.age && (
+              <div className="error-message">{errors.age.message}</div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -137,9 +141,11 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
           type="email"
           placeholder={rhfFormText.emailPlaceholder}
         />
-        {errors.email && (
-          <div className="error-message">{errors.email.message}</div>
-        )}
+        <div className="field-error-container">
+          {errors.email && (
+            <div className="error-message">{errors.email.message}</div>
+          )}
+        </div>
       </div>
 
       <div className="rhf-form__container">
@@ -151,14 +157,18 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             accept="image/png, image/jpeg"
             onChange={handleFileChange}
           />
+
           <div className="image-hint">{rhfFormText.imageHint}</div>
-          {imageError && <div className="error-message">{imageError}</div>}
-          {errors.root && (
-            <div className="error-message">{errors.root.message}</div>
-          )}
-          {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="image-preview" />
-          )}
+
+          <div className="field-error-container">
+            {imageError && <div className="error-message">{imageError}</div>}
+            {errors.root && (
+              <div className="error-message">{errors.root.message}</div>
+            )}
+            {imagePreview && (
+              <img src={imagePreview} alt="Preview" className="image-preview" />
+            )}
+          </div>
         </div>
 
         <div className="rhf-form__field rhf-form__field--radio">
@@ -178,9 +188,12 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
               {rhfFormText.genderFemale}
             </label>
           </div>
-          {errors.gender && (
-            <div className="error-message">{errors.gender.message}</div>
-          )}
+
+          <div className="field-error-container">
+            {errors.gender && (
+              <div className="error-message">{errors.gender.message}</div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -193,14 +206,18 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
           list="rhf-countries-list"
           placeholder={rhfFormText.countryPlaceholder}
         />
+
         <datalist id="rhf-countries-list">
           {countries.map((country) => (
             <option key={country} value={country} />
           ))}
         </datalist>
-        {errors.country && (
-          <div className="error-message">{errors.country.message}</div>
-        )}
+
+        <div className="field-error-container">
+          {errors.country && (
+            <div className="error-message">{errors.country.message}</div>
+          )}
+        </div>
       </div>
 
       <div className="rhf-form__container">
@@ -212,9 +229,12 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             {...register('password')}
             placeholder={rhfFormText.passwordPlaceholder}
           />
-          {errors.password && (
-            <div className="error-message">{errors.password.message}</div>
-          )}
+
+          <div className="field-error-container">
+            {errors.password && (
+              <div className="error-message">{errors.password.message}</div>
+            )}
+          </div>
         </div>
 
         <div className="rhf-form__field">
@@ -227,11 +247,14 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             {...register('confirmPassword')}
             placeholder={rhfFormText.confirmPasswordPlaceholder}
           />
-          {errors.confirmPassword && (
-            <div className="error-message">
-              {errors.confirmPassword.message}
-            </div>
-          )}
+
+          <div className="field-error-container">
+            {errors.confirmPassword && (
+              <div className="error-message">
+                {errors.confirmPassword.message}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -246,9 +269,12 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
           <input type="checkbox" {...register('terms')} />
           {rhfFormText.termsLabel}
         </label>
-        {errors.terms && (
-          <div className="error-message">{errors.terms.message}</div>
-        )}
+
+        <div className="field-error-container">
+          {errors.terms && (
+            <div className="error-message">{errors.terms.message}</div>
+          )}
+        </div>
       </div>
 
       <button type="submit" className="submit-btn" disabled={!isValid}>

@@ -151,30 +151,38 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           <label htmlFor="uncontrolled-name">
             {uncontrolledFormText.nameLabel}
           </label>
+
           <input
             id="uncontrolled-name"
             ref={nameRef}
             type="text"
             placeholder={uncontrolledFormText.namePlaceholder}
           />
-          {fieldErrors.name && (
-            <div className="error-message">{fieldErrors.name}</div>
-          )}
+
+          <div className="field-error-container">
+            {fieldErrors.name && (
+              <div className="error-message">{fieldErrors.name}</div>
+            )}
+          </div>
         </div>
 
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-age">
             {uncontrolledFormText.ageLabel}
           </label>
+
           <input
             id="uncontrolled-age"
             ref={ageRef}
             type="number"
             placeholder={uncontrolledFormText.agePlaceholder}
           />
-          {fieldErrors.age && (
-            <div className="error-message">{fieldErrors.age}</div>
-          )}
+
+          <div className="field-error-container">
+            {fieldErrors.age && (
+              <div className="error-message">{fieldErrors.age}</div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -182,15 +190,19 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
         <label htmlFor="uncontrolled-email">
           {uncontrolledFormText.emailLabel}
         </label>
+
         <input
           id="uncontrolled-email"
           ref={emailRef}
           type="email"
           placeholder={uncontrolledFormText.emailPlaceholder}
         />
-        {fieldErrors.email && (
-          <div className="error-message">{fieldErrors.email}</div>
-        )}
+
+        <div className="field-error-container">
+          {fieldErrors.email && (
+            <div className="error-message">{fieldErrors.email}</div>
+          )}
+        </div>
       </div>
 
       <div className="uncontrolled-form__container">
@@ -198,24 +210,30 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           <label htmlFor="uncontrolled-image">
             {uncontrolledFormText.imageLabel}
           </label>
+
           <input
             id="uncontrolled-image"
             type="file"
             accept="image/png, image/jpeg"
             onChange={handleFileChange}
           />
+
           <div className="image-hint">{uncontrolledFormText.imageHint}</div>
-          {imageError && <div className="error-message">{imageError}</div>}
-          {imageBase64 && (
-            <img src={imageBase64} alt="Preview" className="image-preview" />
-          )}
-          {fieldErrors.image && (
-            <div className="error-message">{fieldErrors.image}</div>
-          )}
+
+          <div className="field-error-container">
+            {imageError && <div className="error-message">{imageError}</div>}
+            {imageBase64 && (
+              <img src={imageBase64} alt="Preview" className="image-preview" />
+            )}
+            {fieldErrors.image && (
+              <div className="error-message">{fieldErrors.image}</div>
+            )}
+          </div>
         </div>
 
         <div className="uncontrolled-form__field uncontrolled-form__field--radio">
           <label>{uncontrolledFormText.genderLabel}</label>
+
           <div className="uncontrolled-form__radio-group">
             <label>
               <input type="radio" value="male" name="gender" defaultChecked />{' '}
@@ -226,9 +244,12 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
               {uncontrolledFormText.genderFemale}
             </label>
           </div>
-          {fieldErrors.gender && (
-            <div className="error-message">{fieldErrors.gender}</div>
-          )}
+
+          <div className="field-error-container">
+            {fieldErrors.gender && (
+              <div className="error-message">{fieldErrors.gender}</div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -236,6 +257,7 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
         <label htmlFor="uncontrolled-country">
           {uncontrolledFormText.countryLabel}
         </label>
+
         <input
           id="uncontrolled-country"
           ref={countryRef}
@@ -243,14 +265,18 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           list="countries-list"
           placeholder={uncontrolledFormText.countryPlaceholder}
         />
+
         <datalist id="countries-list">
           {countries.map((country) => (
             <option key={country} value={country} />
           ))}
         </datalist>
-        {fieldErrors.country && (
-          <div className="error-message">{fieldErrors.country}</div>
-        )}
+
+        <div className="field-error-container">
+          {fieldErrors.country && (
+            <div className="error-message">{fieldErrors.country}</div>
+          )}
+        </div>
       </div>
 
       <div className="uncontrolled-form__container">
@@ -258,6 +284,7 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           <label htmlFor="uncontrolled-password">
             {uncontrolledFormText.passwordLabel}
           </label>
+
           <input
             id="uncontrolled-password"
             type="password"
@@ -265,14 +292,18 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             onChange={handlePasswordChange}
             placeholder={uncontrolledFormText.passwordPlaceholder}
           />
-          {fieldErrors.password && (
-            <div className="error-message">{fieldErrors.password}</div>
-          )}
+
+          <div className="field-error-container">
+            {fieldErrors.password && (
+              <div className="error-message">{fieldErrors.password}</div>
+            )}
+          </div>
         </div>
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-confirm-password">
             {uncontrolledFormText.confirmPasswordLabel}
           </label>
+
           <input
             id="uncontrolled-confirm-password"
             type="password"
@@ -280,9 +311,12 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             onChange={handleConfirmChange}
             placeholder={uncontrolledFormText.confirmPasswordPlaceholder}
           />
-          {fieldErrors.confirmPassword && (
-            <div className="error-message">{fieldErrors.confirmPassword}</div>
-          )}
+
+          <div className="field-error-container">
+            {fieldErrors.confirmPassword && (
+              <div className="error-message">{fieldErrors.confirmPassword}</div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -299,9 +333,12 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             {uncontrolledFormText.termsLabel}
           </label>
         </div>
-        {fieldErrors.terms && (
-          <div className="error-message">{fieldErrors.terms}</div>
-        )}
+
+        <div className="field-error-container">
+          {fieldErrors.terms && (
+            <div className="error-message">{fieldErrors.terms}</div>
+          )}
+        </div>
       </div>
 
       <button type="submit" className="submit-btn">
