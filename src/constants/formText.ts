@@ -10,6 +10,10 @@ export const formFields = {
   genderFemale: 'Кошечка',
   countryLabel: 'Откуда прибыл ваш пушистик? *',
   countryPlaceholder: 'Начните вводить страну',
+  passwordLabel: 'Придумайте секретный пароль *',
+  passwordPlaceholder: '......',
+  confirmPasswordLabel: 'Подтвердите пароль *',
+  confirmPasswordPlaceholder: '......',
   termsLabel: 'Соглашаюсь с условиями и обещаю регулярно гладить котика *',
   submitButton: 'Зарегистрировать котика',
 };

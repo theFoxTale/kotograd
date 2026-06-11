@@ -1,8 +1,10 @@
 import { useForm } from 'react-hook-form';
+
 import { rhfFormText } from '../../../constants/formText';
+import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
+import { checkPasswordStrength } from '../../../utils';
 
 import './ReactHookForm.css';
-import { useCatCitizensStore } from '../../../store/useCatCitizensStore.ts';
 
 interface FormValues {
   name: string;
@@ -11,6 +13,8 @@ interface FormValues {
   gender: string;
   terms: boolean;
   country: string;
+  password: string;
+  confirmPassword: string;
 }
 
 interface ReactHookFormProps {
@@ -23,6 +27,7 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
 
   const {
     register,
+    watch,
     handleSubmit,
     formState: { isValid, errors },
     setError,
@@ -34,9 +39,14 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
       gender: 'male',
       terms: false,
       country: '',
+      password: '',
+      confirmPassword: '',
     },
     mode: 'onChange',
   });
+
+  const password = watch('password');
+  const strength = checkPasswordStrength(password);
 
   const onSubmit = (data: FormValues) => {
     if (!countries.includes(data.country)) {
@@ -120,6 +130,47 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
         </datalist>
         {errors.country && (
           <div className="error-message">{errors.country.message}</div>
+        )}
+      </div>
+
+      <div className="rhf-form__container">
+        <div className="rhf-form__field">
+          <label htmlFor="rhf-email">{rhfFormText.passwordLabel}</label>
+          <input
+            type="password"
+            {...register('password', {
+              required: 'Пароль обязателен',
+              minLength: { value: 6, message: 'Минимум 6 символов' },
+            })}
+            placeholder={rhfFormText.passwordPlaceholder}
+          />
+        </div>
+
+        <div className="rhf-form__field">
+          <label htmlFor="rhf-email">{rhfFormText.confirmPasswordLabel}</label>
+          <input
+            type="password"
+            {...register('confirmPassword', {
+              required: true,
+              validate: (value) =>
+                value === watch('password') || 'Пароли не совпадают',
+            })}
+            placeholder={rhfFormText.confirmPasswordPlaceholder}
+          />
+        </div>
+      </div>
+
+      <div className="rhf-form__container">
+        {errors.password && (
+          <div className="error-message">{errors.password.message}</div>
+        )}
+        {password && (
+          <div className="password-strength" style={{ color: strength.color }}>
+            Сложность: {strength.message}
+          </div>
+        )}
+        {errors.confirmPassword && (
+          <div className="error-message">{errors.confirmPassword.message}</div>
         )}
       </div>
 

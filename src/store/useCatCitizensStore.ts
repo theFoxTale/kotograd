@@ -8,6 +8,7 @@ export interface Citizen {
   email: string;
   gender: string;
   country: string;
+  password: string;
 
   terms: boolean;
   createdAt: number;

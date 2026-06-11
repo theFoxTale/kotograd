@@ -3,8 +3,10 @@ import type { SyntheticEvent } from 'react';
 
 import { uncontrolledFormText } from '../../../constants/formText';
 import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
+import { checkPasswordStrength, type StrengthResult } from '../../../utils';
 
 import './UncontrolledForm.css';
+import * as React from 'react';
 
 interface UncontrolledFormProps {
   onSuccess: () => void;
@@ -20,6 +22,16 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
   const countries = useCatCitizensStore((state) => state.countries);
   const [countryError, setCountryError] = useState('');
 
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordLengthError, setPasswordLengthError] = useState('');
+  const [strength, setStrength] = useState<StrengthResult>({
+    score: 0,
+    message: '',
+    color: '',
+  });
+
   const addCitizen = useCatCitizensStore((state) => state.addCitizen);
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
@@ -33,6 +45,15 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       return;
     }
 
+    if (password !== confirmPassword) {
+      setPasswordError('Пароли не совпадают');
+      return;
+    }
+    if (password.length < 6) {
+      setPasswordError('Пароль должен быть не менее 6 символов');
+      return;
+    }
+
     const formData = {
       name: nameRef.current?.value || '',
       age: Number(ageRef.current?.value),
@@ -40,10 +61,39 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       gender: (formDataObj.get('gender') as string) || 'male',
       terms: termsRef.current?.checked || false,
       country,
+      password,
     };
 
     addCitizen(formData);
     onSuccess();
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const val = event.target.value;
+    setPassword(val);
+    setStrength(checkPasswordStrength(val));
+    if (val.length > 0 && val.length < 6) {
+      setPasswordLengthError('Минимум 6 символов');
+    } else {
+      setPasswordLengthError('');
+    }
+
+    if (confirmPassword && val !== confirmPassword) {
+      setPasswordError('Пароли не совпадают');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const handleConfirmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const val = event.target.value;
+    setConfirmPassword(val);
+
+    if (password !== val) {
+      setPasswordError('Пароли не совпадают');
+    } else {
+      setPasswordError('');
+    }
   };
 
   return (
@@ -120,6 +170,45 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           ))}
         </datalist>
         {countryError && <div className="error-message">{countryError}</div>}
+      </div>
+
+      <div className="uncontrolled-form__container">
+        <div className="uncontrolled-form__field">
+          <label htmlFor="uncontrolled-password">
+            {uncontrolledFormText.passwordLabel}
+          </label>
+          <input
+            id="uncontrolled-password"
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            placeholder={uncontrolledFormText.passwordPlaceholder}
+          />
+        </div>
+
+        <div className="uncontrolled-form__field">
+          <label htmlFor="uncontrolled-confirm-password">
+            {uncontrolledFormText.confirmPasswordLabel}
+          </label>
+          <input
+            id="uncontrolled-confirm-password"
+            type="password"
+            value={confirmPassword}
+            onChange={handleConfirmChange}
+            placeholder={uncontrolledFormText.confirmPasswordPlaceholder}
+          />
+        </div>
+      </div>
+      <div className="uncontrolled-form__container">
+        {passwordLengthError && (
+          <div className="error-message">{passwordLengthError}</div>
+        )}
+        {strength.message && (
+          <div className="password-strength" style={{ color: strength.color }}>
+            Сложность: {strength.message}
+          </div>
+        )}
+        {passwordError && <div className="error-message">{passwordError}</div>}
       </div>
 
       <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
