@@ -20,6 +20,7 @@ interface CatCitizensStore {
   citizens: Citizen[];
   countries: string[];
   addCitizen: (data: Omit<Citizen, 'id' | 'createdAt'>) => void;
+  resetCitizens: () => void;
 }
 
 const defaultCountries = [
@@ -61,4 +62,5 @@ export const useCatCitizensStore = create<CatCitizensStore>((set) => ({
         ...state.citizens,
       ],
     })),
+  resetCitizens: () => set({ citizens: [] }),
 }));

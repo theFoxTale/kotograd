@@ -7,7 +7,7 @@ export interface StrengthResult {
 export const checkPasswordStrength = (password: string): StrengthResult => {
   let score = 0;
 
-  if (password.length >= 8) score++;
+  if (password.length >= 6) score++;
 
   if (/[A-Z]/.test(password)) score++;
   if (/[a-z]/.test(password)) score++;
