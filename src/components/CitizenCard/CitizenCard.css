@@ -1,0 +1,86 @@
+.citizen-card {
+  width: 260px;
+  padding: 0.8rem 1rem;
+  background: #fef3e2;
+  border-radius: 16px;
+  border: 2px solid #f3e5d8;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.citizen-card.highlight {
+  border-color: #f0a34b;
+  background: #fff2df;
+  box-shadow: 0 0 0 3px rgba(240, 163, 75, 0.3);
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.citizen-avatar {
+  font-size: 2rem;
+}
+
+.citizen-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.citizen-header {
+  font-size: 1.1rem;
+  align-self: center;
+}
+
+.citizen-card__details {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.card-icon {
+  width: 40px;
+}
+
+.citizen-text {
+  margin: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
+.citizen-card__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.citizen-date {
+  font-size: 0.6rem;
+  color: #888;
+}
+
+.avatar-image {
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}

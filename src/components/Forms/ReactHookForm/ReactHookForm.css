@@ -1,0 +1,139 @@
+.rhf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rhf-form__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.rhf-form__start {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 12px;
+}
+
+.rhf-form__field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.rhf-form__field label {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.rhf-form__field input,
+.rhf-form__field select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5c0;
+  font-family: inherit;
+  background: #fefef9;
+}
+
+.rhf-form__field--radio {
+  align-items: center;
+}
+
+.rhf-form__radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.2rem;
+}
+
+.rhf-form__field--checkbox {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhf-form__field--checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+
+  font-weight: normal;
+  color: #888;
+  font-size: 0.7rem;
+}
+
+.rhf-form .submit-btn {
+  width: fit-content;
+  align-self: center;
+  background-color: #5b8c4e;
+  border: none;
+
+  color: white;
+  font-weight: bold;
+
+  padding: 1rem;
+  border-radius: 2rem;
+
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.rhf-form .submit-btn:hover:not(:disabled) {
+  background-color: #3f6a35;
+}
+
+.rhf-form .submit-btn:disabled {
+  background-color: #b3c7a8;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.rhf-form .form-title {
+  text-align: center;
+  color: #2c5e2a;
+}
+
+.rhf-form .form-subtitle {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #5a7c4a;
+  margin-bottom: 0.5rem;
+}
+
+.rhf-form .field-error-container {
+  min-height: 1.4rem;
+  margin-top: 0.2rem;
+}
+
+.rhf-form .error-message {
+  color: #e74c3c;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.rhf-form .password-strength {
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.rhf-form .image-hint {
+  font-size: 0.6rem;
+  font-weight: normal;
+  color: #888;
+}
+
+.rhf-form .image-preview {
+  width: 80px;
+  height: auto;
+  margin-right: 24px;
+  border-radius: 50%;
+}
+
+.rhf-form__image {
+  width: 200px;
+}

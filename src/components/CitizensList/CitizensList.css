@@ -1,0 +1,25 @@
+.submissions-section {
+  margin-top: 2rem;
+  border-top: 2px dashed #ffd966;
+  padding-top: 1.5rem;
+}
+
+.submissions-title {
+  font-size: 1.5rem;
+  color: #b85c1a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.submissions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.submissions-empty {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}

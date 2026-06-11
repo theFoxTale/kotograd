@@ -1,0 +1,158 @@
+.uncontrolled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.uncontrolled-form__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.uncontrolled-form__start {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 12px;
+}
+
+.uncontrolled-form__container-term {
+  display: flex;
+  flex-direction: column;
+}
+
+.uncontrolled-form__field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.uncontrolled-form__field label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #6b3f00;
+}
+
+.uncontrolled-form__field input,
+.uncontrolled-form__field select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #f3cba1;
+  font-family: inherit;
+  background: #fffef7;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.uncontrolled-form__field input:focus,
+.uncontrolled-form__field select:focus {
+  outline: none;
+  border-color: #f0a34b;
+  box-shadow: 0 0 0 2px rgba(240, 163, 75, 0.2);
+}
+
+.uncontrolled-form__field--radio {
+  align-items: center;
+}
+
+.uncontrolled-form__radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.2rem;
+}
+
+.uncontrolled-form__radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #6b3f00;
+}
+
+.uncontrolled-form__field--checkbox {
+  flex-direction: row;
+  align-items: center;
+}
+
+.uncontrolled-form__field--checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+
+  font-weight: normal;
+  color: #888;
+  font-size: 0.7rem;
+}
+
+.uncontrolled-form .submit-btn {
+  width: fit-content;
+  align-self: center;
+  background-color: #f0a34b;
+  border: none;
+
+  color: white;
+  font-weight: bold;
+
+  padding: 1rem;
+  border-radius: 2rem;
+
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.uncontrolled-form .submit-btn:hover {
+  background-color: #d47e2a;
+  transform: scale(1.02);
+}
+
+.uncontrolled-form .form-title {
+  text-align: center;
+  color: #b85c1a;
+}
+
+.uncontrolled-form .form-subtitle {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #c2782b;
+  margin-bottom: 0.5rem;
+}
+
+.uncontrolled-form .field-error-container {
+  min-height: 1.4rem;
+  margin-top: 0.2rem;
+}
+
+.uncontrolled-form .error-message {
+  color: #e74c3c;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.uncontrolled-form .password-strength {
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.uncontrolled-form .image-preview {
+  width: 80px;
+  height: auto;
+  margin-right: 24px;
+  border-radius: 50%;
+}
+
+.uncontrolled-form .image-hint {
+  font-size: 0.6rem;
+  font-weight: normal;
+  color: #888;
+}
+
+.uncontrolled-form__image {
+  width: 200px;
+}

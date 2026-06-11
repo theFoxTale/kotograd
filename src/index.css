@@ -1,0 +1,43 @@
+@import 'fonts.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Unbounded', 'Segoe UI', system-ui, sans-serif;
+  background-image: url('/src/assets/images/background.png');
+  background-repeat: repeat;
+  background-size: 300px;
+}
+
+#root {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 62px;
+}
+
+p {
+  margin: 0;
+}

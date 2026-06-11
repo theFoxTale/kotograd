@@ -1,0 +1,42 @@
+.app-container {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.app-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.app-hero {
+  flex: 1;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 1000px) {
+  .app-main {
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-hero {
+    max-width: 80%;
+  }
+}

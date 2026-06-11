@@ -1,0 +1,10 @@
+echo "Running ts type check..."
+npm run type-check
+echo "✅ Type check passed."
+
+# Добавляем локальные бинарники в PATH, чтобы lint-staged видел npm, prettier, eslint
+export PATH="$PWD/node_modules/.bin:$PATH"
+
+echo "Running prettier and eslint on staged files..."
+$PWD/node_modules/.bin/lint-staged
+echo "✅ Prettier and eslint checks passed."
