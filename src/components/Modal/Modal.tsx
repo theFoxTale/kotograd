@@ -95,7 +95,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           <img src={modalCat} alt={imageAlt.modalCat} />
         </div>
 
-        {children}
+        <div className="modal-container__overflow">{children}</div>
       </div>
     </div>,
     document.body
