@@ -22,6 +22,7 @@ function App() {
 
   const closeModal = (citizenId?: string) => {
     setModalType(null);
+
     if (citizenId) {
       setNewCitizenId(citizenId);
       setTimeout(() => setNewCitizenId(null), 3000);

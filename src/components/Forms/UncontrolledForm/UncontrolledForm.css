@@ -112,3 +112,9 @@
   color: #c2782b;
   margin-bottom: 0.5rem;
 }
+
+.uncontrolled-form .error-message {
+  color: #e74c3c;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}

@@ -97,3 +97,9 @@
   color: #5a7c4a;
   margin-bottom: 0.5rem;
 }
+
+.rhf-form .error-message {
+  color: #e74c3c;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}

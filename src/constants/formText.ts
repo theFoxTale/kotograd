@@ -8,6 +8,8 @@ export const formFields = {
   genderLabel: 'Пол пушистика *',
   genderMale: 'Кот',
   genderFemale: 'Кошечка',
+  countryLabel: 'Откуда прибыл ваш пушистик? *',
+  countryPlaceholder: 'Начните вводить страну',
   termsLabel: 'Соглашаюсь с условиями и обещаю регулярно гладить котика *',
   submitButton: 'Зарегистрировать котика',
 };

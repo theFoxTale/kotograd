@@ -3,6 +3,7 @@ import { formFields } from '../../constants/formText';
 import './CitizenCard.css';
 import genderIcon from '../../assets/images/icons/gender.png';
 import ownerIcon from '../../assets/images/icons/owner.png';
+import locationIcon from '../../assets/images/icons/location.png';
 import ageIcon from '../../assets/images/icons/age.png';
 
 interface CitizenCardProps {
@@ -11,6 +12,7 @@ interface CitizenCardProps {
   age: number;
   email: string;
   gender: string;
+  country: string;
   createdAt: number;
   isHighlighted: boolean;
 }
@@ -20,6 +22,7 @@ export const CitizenCard = ({
   age,
   email,
   gender,
+  country,
   createdAt,
   isHighlighted,
 }: CitizenCardProps) => {
@@ -49,6 +52,11 @@ export const CitizenCard = ({
           <div className="detail-item">
             <img src={ownerIcon} alt="Пол" className="card-icon" />
             <p className="citizen-text">{email}</p>
+          </div>
+
+          <div className="detail-item">
+            <img src={locationIcon} alt="Страна" className="card-icon" />
+            <p className="citizen-text">{country || 'Не указана'}</p>
           </div>
         </div>
 

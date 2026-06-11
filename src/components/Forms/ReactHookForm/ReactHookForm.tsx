@@ -10,6 +10,7 @@ interface FormValues {
   email: string;
   gender: string;
   terms: boolean;
+  country: string;
 }
 
 interface ReactHookFormProps {
@@ -18,11 +19,13 @@ interface ReactHookFormProps {
 
 export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
   const addCitizen = useCatCitizensStore((state) => state.addCitizen);
+  const countries = useCatCitizensStore((state) => state.countries);
 
   const {
     register,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors },
+    setError,
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -30,11 +33,17 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
       email: '',
       gender: 'male',
       terms: false,
+      country: '',
     },
     mode: 'onChange',
   });
 
   const onSubmit = (data: FormValues) => {
+    if (!countries.includes(data.country)) {
+      setError('country', { message: 'Выберите страну из списка' });
+      return;
+    }
+
     addCitizen(data);
     onSuccess();
   };
@@ -93,6 +102,25 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             {rhfFormText.genderFemale}
           </label>
         </div>
+      </div>
+
+      <div className="rhf-form__field">
+        <label htmlFor="rhf-country">{rhfFormText.countryLabel}</label>
+        <input
+          id="rhf-country"
+          {...register('country', { required: true })}
+          type="text"
+          list="rhf-countries-list"
+          placeholder={rhfFormText.countryPlaceholder}
+        />
+        <datalist id="rhf-countries-list">
+          {countries.map((country) => (
+            <option key={country} value={country} />
+          ))}
+        </datalist>
+        {errors.country && (
+          <div className="error-message">{errors.country.message}</div>
+        )}
       </div>
 
       <div className="rhf-form__field rhf-form__field--checkbox">

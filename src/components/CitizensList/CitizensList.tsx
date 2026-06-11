@@ -27,6 +27,7 @@ export function CitizensList({ newCitizenId }: CitizensListProps) {
               age={citizen.age}
               email={citizen.email}
               gender={citizen.gender}
+              country={citizen.country}
               createdAt={citizen.createdAt}
               isHighlighted={citizen.id === newCitizenId}
             />

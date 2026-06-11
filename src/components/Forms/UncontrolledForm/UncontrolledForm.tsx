@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import type { SyntheticEvent } from 'react';
 
 import { uncontrolledFormText } from '../../../constants/formText';
@@ -14,7 +14,11 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
+
+  const countries = useCatCitizensStore((state) => state.countries);
+  const [countryError, setCountryError] = useState('');
 
   const addCitizen = useCatCitizensStore((state) => state.addCitizen);
 
@@ -23,12 +27,19 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
     const form = event.currentTarget;
     const formDataObj = new FormData(form);
 
+    const country = countryRef.current?.value.trim() || '';
+    if (!countries.includes(country)) {
+      setCountryError('Выберите страну из списка');
+      return;
+    }
+
     const formData = {
       name: nameRef.current?.value || '',
       age: Number(ageRef.current?.value),
       email: emailRef.current?.value || '',
       gender: (formDataObj.get('gender') as string) || 'male',
       terms: termsRef.current?.checked || false,
+      country,
     };
 
     addCitizen(formData);
@@ -90,6 +101,25 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             {uncontrolledFormText.genderFemale}
           </label>
         </div>
+      </div>
+
+      <div className="uncontrolled-form__field">
+        <label htmlFor="uncontrolled-country">
+          {uncontrolledFormText.countryLabel}
+        </label>
+        <input
+          id="uncontrolled-country"
+          ref={countryRef}
+          type="text"
+          list="countries-list"
+          placeholder={uncontrolledFormText.countryPlaceholder}
+        />
+        <datalist id="countries-list">
+          {countries.map((country) => (
+            <option key={country} value={country} />
+          ))}
+        </datalist>
+        {countryError && <div className="error-message">{countryError}</div>}
       </div>
 
       <div className="uncontrolled-form__field uncontrolled-form__field--checkbox">
