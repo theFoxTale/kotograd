@@ -11,6 +11,11 @@
   gap: 12px;
 }
 
+.uncontrolled-form__container-term {
+  display: flex;
+  flex-direction: column;
+}
+
 .uncontrolled-form__field {
   width: 100%;
   display: flex;
@@ -63,7 +68,6 @@
 .uncontrolled-form__field--checkbox {
   flex-direction: row;
   align-items: center;
-  justify-content: center;
 }
 
 .uncontrolled-form__field--checkbox label {
@@ -129,4 +133,10 @@
   height: auto;
   margin-top: 0.5rem;
   border-radius: 8px;
+}
+
+.uncontrolled-form .image-hint {
+  font-size: 0.6rem;
+  font-weight: normal;
+  color: #888;
 }

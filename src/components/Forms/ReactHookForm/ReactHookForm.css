@@ -108,3 +108,9 @@
   font-size: 0.7rem;
   margin-top: 0.2rem;
 }
+
+.rhf-form .image-hint {
+  font-size: 0.6rem;
+  font-weight: normal;
+  color: #888;
+}
