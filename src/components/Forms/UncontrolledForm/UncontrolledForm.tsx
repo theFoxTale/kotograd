@@ -1,12 +1,15 @@
-import { useRef, useState } from 'react';
+import { type ChangeEvent, useRef, useState } from 'react';
 import type { SyntheticEvent } from 'react';
 
 import { uncontrolledFormText } from '../../../constants/formText';
 import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
-import { checkPasswordStrength, type StrengthResult } from '../../../utils';
+import {
+  checkPasswordStrength,
+  imageToBase64,
+  type StrengthResult,
+} from '../../../utils';
 
 import './UncontrolledForm.css';
-import * as React from 'react';
 
 interface UncontrolledFormProps {
   onSuccess: () => void;
@@ -32,9 +35,12 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
     color: '',
   });
 
+  const [imageBase64, setImageBase64] = useState<string>('');
+  const [imageError, setImageError] = useState('');
+
   const addCitizen = useCatCitizensStore((state) => state.addCitizen);
 
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const formDataObj = new FormData(form);
@@ -62,13 +68,14 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       terms: termsRef.current?.checked || false,
       country,
       password,
+      imageBase64,
     };
 
     addCitizen(formData);
     onSuccess();
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     setPassword(val);
     setStrength(checkPasswordStrength(val));
@@ -85,7 +92,7 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
     }
   };
 
-  const handleConfirmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleConfirmChange = (event: ChangeEvent<HTMLInputElement>) => {
     const val = event.target.value;
     setConfirmPassword(val);
 
@@ -93,6 +100,36 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
       setPasswordError('Пароли не совпадают');
     } else {
       setPasswordError('');
+    }
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setImageError('');
+
+    if (!file) {
+      setImageBase64('');
+      return;
+    }
+
+    const validTypes = ['image/png', 'image/jpeg'];
+    const maxSize = 2 * 1024 * 1024; // 2 MB
+
+    if (!validTypes.includes(file.type)) {
+      setImageError('Только PNG или JPEG');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setImageError('Размер файла не более 2 MB');
+      return;
+    }
+
+    try {
+      const base64 = await imageToBase64(file);
+      setImageBase64(base64);
+    } catch {
+      setImageError('Ошибка при загрузке изображения');
     }
   };
 
@@ -113,7 +150,6 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             placeholder={uncontrolledFormText.namePlaceholder}
           />
         </div>
-
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-age">
             {uncontrolledFormText.ageLabel}
@@ -139,17 +175,36 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
         />
       </div>
 
-      <div className="uncontrolled-form__field uncontrolled-form__field--radio">
-        <label>{uncontrolledFormText.genderLabel}</label>
-        <div className="uncontrolled-form__radio-group">
-          <label>
-            <input type="radio" value="male" name="gender" defaultChecked />{' '}
-            {uncontrolledFormText.genderMale}
+      <div className="uncontrolled-form__container">
+        <div className="uncontrolled-form__field">
+          <label htmlFor="uncontrolled-image">
+            {uncontrolledFormText.imageLabel}
           </label>
-          <label>
-            <input type="radio" value="female" name="gender" />{' '}
-            {uncontrolledFormText.genderFemale}
-          </label>
+          <input
+            id="uncontrolled-image"
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleFileChange}
+          />
+          <div className="image-hint">{uncontrolledFormText.imageHint}</div>
+          {imageError && <div className="error-message">{imageError}</div>}
+          {imageBase64 && (
+            <img src={imageBase64} alt="Preview" className="image-preview" />
+          )}
+        </div>
+
+        <div className="uncontrolled-form__field uncontrolled-form__field--radio">
+          <label>{uncontrolledFormText.genderLabel}</label>
+          <div className="uncontrolled-form__radio-group">
+            <label>
+              <input type="radio" value="male" name="gender" defaultChecked />{' '}
+              {uncontrolledFormText.genderMale}
+            </label>
+            <label>
+              <input type="radio" value="female" name="gender" />{' '}
+              {uncontrolledFormText.genderFemale}
+            </label>
+          </div>
         </div>
       </div>
 
@@ -185,7 +240,6 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
             placeholder={uncontrolledFormText.passwordPlaceholder}
           />
         </div>
-
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-confirm-password">
             {uncontrolledFormText.confirmPasswordLabel}
@@ -199,6 +253,7 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           />
         </div>
       </div>
+
       <div className="uncontrolled-form__container">
         {passwordLengthError && (
           <div className="error-message">{passwordLengthError}</div>

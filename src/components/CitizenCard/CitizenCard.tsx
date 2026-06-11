@@ -13,6 +13,7 @@ interface CitizenCardProps {
   email: string;
   gender: string;
   country: string;
+  imageBase64?: string;
   createdAt: number;
   isHighlighted: boolean;
 }
@@ -23,12 +24,20 @@ export const CitizenCard = ({
   email,
   gender,
   country,
+  imageBase64,
   createdAt,
   isHighlighted,
 }: CitizenCardProps) => {
   return (
     <div className={`citizen-card ${isHighlighted ? 'highlight' : ''}`}>
-      <div className="citizen-avatar">🐱</div>
+      <div className="citizen-avatar">
+        {imageBase64 ? (
+          <img src={imageBase64} alt="Аватарка" className="avatar-image" />
+        ) : (
+          <span>🐱</span>
+        )}
+      </div>
+
       <div className="citizen-info">
         <p className="citizen-header">
           <strong>{name}</strong>

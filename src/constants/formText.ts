@@ -6,6 +6,8 @@ export const formFields = {
   emailLabel: 'Почта хранителя котика *',
   emailPlaceholder: 'example@mail.ru',
   genderLabel: 'Пол пушистика *',
+  imageLabel: 'Фото пушистика *',
+  imageHint: 'PNG, JPG до 2 MB',
   genderMale: 'Кот',
   genderFemale: 'Кошечка',
   countryLabel: 'Откуда прибыл ваш пушистик? *',

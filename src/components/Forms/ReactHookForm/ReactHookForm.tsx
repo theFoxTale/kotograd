@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
 import { rhfFormText } from '../../../constants/formText';
 import { useCatCitizensStore } from '../../../store/useCatCitizensStore';
-import { checkPasswordStrength } from '../../../utils';
+import { checkPasswordStrength, imageToBase64 } from '../../../utils';
 
 import './ReactHookForm.css';
 
@@ -15,6 +16,7 @@ interface FormValues {
   country: string;
   password: string;
   confirmPassword: string;
+  image?: FileList;
 }
 
 interface ReactHookFormProps {
@@ -31,6 +33,7 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
     handleSubmit,
     formState: { isValid, errors },
     setError,
+    clearErrors,
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -48,13 +51,43 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
   const password = watch('password');
   const strength = checkPasswordStrength(password);
 
-  const onSubmit = (data: FormValues) => {
+  const imageFile = watch('image');
+  const [imagePreview, setImagePreview] = useState('');
+
+  useEffect(() => {
+    if (imageFile && imageFile[0]) {
+      const file = imageFile[0];
+      const validTypes = ['image/png', 'image/jpeg'];
+      const maxSize = 2 * 1024 * 1024;
+      if (!validTypes.includes(file.type)) {
+        setError('image', { message: 'Только PNG или JPEG' });
+        return;
+      }
+      if (file.size > maxSize) {
+        setError('image', { message: 'Размер файла не более 2 MB' });
+        return;
+      }
+      clearErrors('image');
+      imageToBase64(file).then((base64) => setImagePreview(base64));
+    } else {
+      setImagePreview('');
+    }
+  }, [imageFile, setError, clearErrors]);
+
+  const onSubmit = async (data: FormValues) => {
     if (!countries.includes(data.country)) {
       setError('country', { message: 'Выберите страну из списка' });
       return;
     }
 
-    addCitizen(data);
+    const imageBase64 = imageFile?.[0]
+      ? await imageToBase64(imageFile[0])
+      : undefined;
+    addCitizen({
+      ...data,
+      imageBase64,
+    });
+
     onSuccess();
   };
 
@@ -95,22 +128,41 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
         />
       </div>
 
-      <div className="rhf-form__field rhf-form__field--radio">
-        <label>{rhfFormText.genderLabel}</label>
-        <div className="rhf-form__radio-group">
-          <label>
-            <input
-              type="radio"
-              value="male"
-              {...register('gender')}
-              defaultChecked
-            />{' '}
-            {rhfFormText.genderMale}
-          </label>
-          <label>
-            <input type="radio" value="female" {...register('gender')} />{' '}
-            {rhfFormText.genderFemale}
-          </label>
+      <div className="rhf-form__container">
+        <div className="rhf-form__field">
+          <label htmlFor="rhf-image">{rhfFormText.imageLabel}</label>
+          <input
+            id="rhf-image"
+            type="file"
+            accept="image/png, image/jpeg"
+            {...register('image')}
+          />
+          <div className="image-hint">{rhfFormText.imageHint}</div>
+          {errors.image && (
+            <div className="error-message">{errors.image.message}</div>
+          )}
+          {imagePreview && (
+            <img src={imagePreview} alt="Preview" className="image-preview" />
+          )}
+        </div>
+
+        <div className="rhf-form__field rhf-form__field--radio">
+          <label>{rhfFormText.genderLabel}</label>
+          <div className="rhf-form__radio-group">
+            <label>
+              <input
+                type="radio"
+                value="male"
+                {...register('gender')}
+                defaultChecked
+              />{' '}
+              {rhfFormText.genderMale}
+            </label>
+            <label>
+              <input type="radio" value="female" {...register('gender')} />{' '}
+              {rhfFormText.genderFemale}
+            </label>
+          </div>
         </div>
       </div>
 
