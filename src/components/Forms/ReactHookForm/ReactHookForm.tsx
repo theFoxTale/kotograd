@@ -148,11 +148,16 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
         </div>
       </div>
 
-      <div className="rhf-form__container">
+      <div className="rhf-form__start">
+        {imagePreview && (
+          <img src={imagePreview} alt="Preview" className="image-preview" />
+        )}
+
         <div className="rhf-form__field">
           <label htmlFor="rhf-image">{rhfFormText.imageLabel}</label>
           <input
             id="rhf-image"
+            className="rhf-form__image"
             type="file"
             accept="image/png, image/jpeg"
             onChange={handleFileChange}
@@ -164,9 +169,6 @@ export const ReactHookForm = ({ onSuccess }: ReactHookFormProps) => {
             {imageError && <div className="error-message">{imageError}</div>}
             {errors.root && (
               <div className="error-message">{errors.root.message}</div>
-            )}
-            {imagePreview && (
-              <img src={imagePreview} alt="Preview" className="image-preview" />
             )}
           </div>
         </div>

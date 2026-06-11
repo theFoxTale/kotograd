@@ -11,6 +11,13 @@
   gap: 12px;
 }
 
+.uncontrolled-form__start {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 12px;
+}
+
 .uncontrolled-form__container-term {
   display: flex;
   flex-direction: column;
@@ -136,12 +143,16 @@
 .uncontrolled-form .image-preview {
   width: 80px;
   height: auto;
-  margin-top: 0.5rem;
-  border-radius: 8px;
+  margin-right: 24px;
+  border-radius: 50%;
 }
 
 .uncontrolled-form .image-hint {
   font-size: 0.6rem;
   font-weight: normal;
   color: #888;
+}
+
+.uncontrolled-form__image {
+  width: 200px;
 }

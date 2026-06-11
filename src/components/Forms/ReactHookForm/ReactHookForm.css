@@ -11,6 +11,13 @@
   gap: 12px;
 }
 
+.rhf-form__start {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 12px;
+}
+
 .rhf-form__field {
   width: 100%;
   display: flex;
@@ -118,4 +125,15 @@
   font-size: 0.6rem;
   font-weight: normal;
   color: #888;
+}
+
+.rhf-form .image-preview {
+  width: 80px;
+  height: auto;
+  margin-right: 24px;
+  border-radius: 50%;
+}
+
+.rhf-form__image {
+  width: 200px;
 }

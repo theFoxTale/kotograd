@@ -205,7 +205,11 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
         </div>
       </div>
 
-      <div className="uncontrolled-form__container">
+      <div className="uncontrolled-form__start">
+        {imageBase64 && (
+          <img src={imageBase64} alt="Preview" className="image-preview" />
+        )}
+
         <div className="uncontrolled-form__field">
           <label htmlFor="uncontrolled-image">
             {uncontrolledFormText.imageLabel}
@@ -214,6 +218,7 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
           <input
             id="uncontrolled-image"
             type="file"
+            className="uncontrolled-form__image"
             accept="image/png, image/jpeg"
             onChange={handleFileChange}
           />
@@ -222,9 +227,6 @@ export const UncontrolledForm = ({ onSuccess }: UncontrolledFormProps) => {
 
           <div className="field-error-container">
             {imageError && <div className="error-message">{imageError}</div>}
-            {imageBase64 && (
-              <img src={imageBase64} alt="Preview" className="image-preview" />
-            )}
             {fieldErrors.image && (
               <div className="error-message">{fieldErrors.image}</div>
             )}
