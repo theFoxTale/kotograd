@@ -21,7 +21,7 @@ export const citizenSchema = z
       .min(1, 'Имя обязательно')
       .refine((val) => !/\d/.test(val), 'Имя не должно содержать цифры')
       .refine(
-        (val) => val[0] === val[0].toUpperCase(),
+        (val) => /^[A-ZА-ЯЁ]/.test(val),
         'Первая буква имени должна быть заглавной'
       ),
 
